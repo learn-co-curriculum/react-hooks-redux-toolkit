@@ -23,10 +23,10 @@ export function catAdded(newCat) {
   };
 }
 
-export function catUpdated(id, url) {
+export function catUpdated(updatedCat) {
   return {
     type: "cats/catUpdated",
-    payload: { id, url },
+    payload: updatedCat,
   };
 }
 
