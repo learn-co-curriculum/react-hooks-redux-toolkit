@@ -101,22 +101,22 @@ describe("catsReducer()", () => {
     });
   });
 
-  it("should handle the 'cats/catsLoading' action", () => {
+  it("should handle the 'cats/fetchCats/pending' action", () => {
     expect(
       catsReducer(undefined, {
-        type: "cats/catsLoading",
+        type: "cats/fetchCats/pending",
       })
     ).to.eql({ status: "loading", entities: [] });
   });
 
-  it("should handle the 'cats/catsLoaded' action", () => {
+  it("should handle the 'cats/fetchCats/fulfilled' action", () => {
     const catPics = [
       { url: "www.example.com/cat1" },
       { url: "www.example.com/cat2" },
     ];
     expect(
       catsReducer(undefined, {
-        type: "cats/catsLoaded",
+        type: "cats/fetchCats/fulfilled",
         payload: catPics,
       })
     ).to.eql({ status: "idle", entities: catPics });

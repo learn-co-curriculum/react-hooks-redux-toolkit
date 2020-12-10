@@ -22,7 +22,8 @@ describe("Cats", () => {
 
   beforeEach(() => {
     store = createStore(rootReducer, applyMiddleware(thunk));
-    store.dispatch({ type: "cats/catsLoaded", payload: catPics });
+    store.dispatch({ type: "cats/catAdded", payload: catPics[0] });
+    store.dispatch({ type: "cats/catAdded", payload: catPics[1] });
 
     wrapper = mount(
       <Provider store={store}>
@@ -37,6 +38,6 @@ describe("Cats", () => {
 
   it("passes catPics from the store passed as a prop to CatList", () => {
     expect(wrapper.find(CatList).props().catPics).to.exist;
-    expect(wrapper.find(CatList).prop("catPics")).to.eq(catPics);
+    expect(wrapper.find(CatList).prop("catPics")).to.eql(catPics);
   });
 });
