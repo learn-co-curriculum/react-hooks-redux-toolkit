@@ -8,7 +8,7 @@ export function fetchCats() {
       .then((response) => response.json())
       .then((data) => {
         dispatch({
-          type: "cats/cats/fetchCats/fulfilled",
+          type: "cats/fetchCats/fulfilled",
           payload: data.images,
         });
       });
