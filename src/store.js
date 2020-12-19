@@ -1,10 +1,11 @@
-import { createStore, applyMiddleware } from "redux";
-import thunkMiddleware from "redux-thunk";
-import { composeWithDevTools } from "redux-devtools-extension";
-import rootReducer from "./reducer";
+import { configureStore } from "@reduxjs/toolkit";
 
-const composedEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware));
+import catsReducer from "./features/cats/catsSlice";
 
-const store = createStore(rootReducer, composedEnhancer);
+const store = configureStore({
+  reducer: {
+    cats: catsReducer,
+  },
+});
 
 export default store;
