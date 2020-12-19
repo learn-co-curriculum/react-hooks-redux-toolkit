@@ -2,12 +2,13 @@ import React from "react";
 import { configure, mount } from "enzyme";
 import { expect } from "chai";
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
-import CatList from "../features/cats/CatList";
-import { applyMiddleware, createStore } from "redux";
-import rootReducer from "../reducer";
+import { applyMiddleware, createStore, combineReducers } from "redux";
 import { Provider } from "react-redux";
-import Cats from "../features/cats/Cats";
 import thunk from "redux-thunk";
+
+import Cats from "../features/cats/Cats";
+import CatList from "../features/cats/CatList";
+import catsReducer from "../features/cats/catsSlice";
 
 configure({ adapter: new Adapter() });
 
@@ -21,7 +22,10 @@ describe("Cats", () => {
   let wrapper;
 
   beforeEach(() => {
-    store = createStore(rootReducer, applyMiddleware(thunk));
+    store = createStore(
+      combineReducers({ cats: catsReducer }),
+      applyMiddleware(thunk)
+    );
     store.dispatch({ type: "cats/catAdded", payload: catPics[0] });
     store.dispatch({ type: "cats/catAdded", payload: catPics[1] });
 
