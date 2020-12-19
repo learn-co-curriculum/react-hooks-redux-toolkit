@@ -27,7 +27,7 @@ describe("async actions", () => {
     nock.cleanAll();
   });
 
-  it('uses redux and thunk to create an action object with type of "cats/catsLoaded" and a payload of cat images', async () => {
+  it('uses redux and thunk to create an action object with type of "cats/fetchCats/fulfilled" and a payload of cat images', async () => {
     window.fetch = fetch;
 
     nock("https://learn-co-curriculum.github.io")
@@ -47,7 +47,10 @@ describe("async actions", () => {
     const store = mockStore({});
     await store.dispatch(fetchCats());
     await sleep(2000);
-    expect(store.getActions()).to.eql(expectedActions);
+    const actions = store.getActions();
+    expect(actions[0].type).to.eql(expectedActions[0].type);
+    expect(actions[1].type).to.eql(expectedActions[1].type);
+    expect(actions[1].payload).to.eql(expectedActions[1].payload);
   });
 });
 
@@ -59,7 +62,7 @@ describe("sync actions", () => {
     });
   });
   it("catUpdated() should return the correct object", () => {
-    expect(catUpdated(1, "www.example.com/cat2")).to.eql({
+    expect(catUpdated({ id: 1, url: "www.example.com/cat2" })).to.eql({
       type: "cats/catUpdated",
       payload: { id: 1, url: "www.example.com/cat2" },
     });

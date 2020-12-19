@@ -116,7 +116,7 @@ of course):
 // src/features/cats/catsSlice.js
 export default function catsReducer(state = initialState, action) {
   switch (action.type) {
-    case "cats/catsLoading":
+    case "cats/fetchCats/pending":
       // mutating state! nonono
       state.status = "loading";
       return state;
@@ -130,8 +130,9 @@ can introduce a lot of strange behavior into our apps. Having this automatic
 check in place should give us more confidence that we're writing our reducer
 code properly!
 
-We can also now safely remove some dependencies from our app (since they're
-included with Redux Toolkit):
+Now that we're done with the Redux Toolkit setup for our store, we can also now
+safely remove some dependencies from our app (since they're included with Redux
+Toolkit):
 
 ```sh
 npm uninstall redux redux-thunk
@@ -170,12 +171,12 @@ function catsReducer(state = initialState, action) {
       };
 
     // async actions
-    case "cats/catsLoading":
+    case "cats/fetchCats/pending":
       return {
         ...state,
         status: "loading",
       };
-    case "cats/catsLoaded":
+    case "cats/fetchCats/fulfilled":
       return {
         ...state,
         entities: action.payload,
@@ -221,7 +222,12 @@ const catsSlice = createSlice({
     // async actions to come...
   },
 });
+
+export default catsSlice.reducer;
 ```
+
+Running `npm test` now after swapping out our reducer should still pass for all
+tests except those related to our _async_ actions (more on that later).
 
 One thing you'll notice is that we're now allowed to mutate state - no more
 spread operator! Under the hood, Redux Toolkit uses a library called [Immer][]
@@ -272,16 +278,16 @@ const catsSlice = createReducer(
     // sync reducers here
   },
   // add this as a new key
-  extraReducers: builder => {
-    builder
-      .addCase(fetchCats.pending, (state, action) => {
-        state.status = 'loading'
-      })
-      .addCase(fetchCats.fulfilled, (state, action) => {
-        state.entities = action.payload
-        state.status = 'idle'
-      })
-  }
+  extraReducers: {
+    // handle async action types
+    [fetchCats.pending](state) {
+      state.status = "loading";
+    },
+    [fetchCats.fulfilled](state, action) {
+      state.entities = action.payload;
+      state.status = "idle";
+    },
+  },
 )
 ```
 
@@ -303,11 +309,53 @@ fetch statuses ('idle', 'loading', 'error').
 Here's what our completed slice file looks like after all those changes:
 
 ```js
+// src/features/cats/catsSlice.js
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+export const fetchCats = createAsyncThunk("cats/fetchCats", () => {
+  // return a Promise containing the data we want
+  return fetch("https://learn-co-curriculum.github.io/cat-api/cats.json")
+    .then((response) => response.json())
+    .then((data) => data.images);
+});
+
+const catsSlice = createSlice({
+  name: "cats",
+  initialState: {
+    entities: [], // array of cats
+    status: "idle", // loading state
+  },
+  reducers: {
+    catAdded(state, action) {
+      // using createSlice lets us mutate state!
+      state.entities.push(action.payload);
+    },
+    catUpdated(state, action) {
+      const cat = state.entities.find((cat) => cat.id === action.payload.id);
+      cat.url = action.payload.url;
+    },
+  },
+  extraReducers: {
+    // handle async actions: pending, fulfilled, rejected (for errors)
+    [fetchCats.pending](state) {
+      state.status = "loading";
+    },
+    [fetchCats.fulfilled](state, action) {
+      state.entities = action.payload;
+      state.status = "idle";
+    },
+  },
+});
+
+export const { catAdded, catUpdated } = catsSlice.actions;
+
+export default catsSlice.reducer;
 ```
 
 Running the tests again should still give you a passing result - meaning that
 our refactor was successful.
+
+You can see the full, working code in the solution branch.
 
 ## Summary
 
