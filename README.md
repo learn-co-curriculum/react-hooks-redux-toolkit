@@ -271,7 +271,7 @@ export const fetchCats = createAsyncThunk("cats/fetchCats", () => {
 Next, to add this to our reducer:
 
 ```js
-const catsSlice = createReducer(
+const catsSlice = createSlice({
   name: "cats",
   initialState,
   reducers: {
@@ -288,7 +288,7 @@ const catsSlice = createReducer(
       state.status = "idle";
     },
   },
-)
+})
 ```
 
 To recap what the code above is doing:
