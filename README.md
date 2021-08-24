@@ -36,8 +36,8 @@ using the Redux Toolkit can help simplify our code.
 
 To get started, install the Redux Toolkit:
 
-```sh
-npm install @reduxjs/toolkit
+```console
+$ npm install @reduxjs/toolkit
 ```
 
 Then, code along as we refactor.
@@ -134,8 +134,8 @@ Now that we're done with the Redux Toolkit setup for our store, we can also now
 safely remove some dependencies from our app (since they're included with Redux
 Toolkit):
 
-```sh
-npm uninstall redux redux-thunk
+```console
+$ npm uninstall redux redux-thunk
 ```
 
 ## Creating Slices
@@ -288,7 +288,7 @@ const catsSlice = createSlice({
       state.status = "idle";
     },
   },
-})
+});
 ```
 
 To recap what the code above is doing:
