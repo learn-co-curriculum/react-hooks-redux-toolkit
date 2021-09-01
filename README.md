@@ -1,8 +1,8 @@
 # Redux Toolkit
 
-## Objectives
+## Learning Goals
 
-1. Use Redux Toolkit to simplify Redux setup and help follow best practices
+- Use Redux Toolkit to simplify Redux setup and help follow best practices
 
 ## Introduction
 
