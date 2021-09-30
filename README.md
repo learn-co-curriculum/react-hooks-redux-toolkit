@@ -1,8 +1,8 @@
 # Redux Toolkit
 
-## Objectives
+## Learning Goals
 
-1. Use Redux Toolkit to simplify Redux setup and help follow best practices
+- Use Redux Toolkit to simplify Redux setup and help follow best practices
 
 ## Introduction
 
@@ -36,8 +36,8 @@ using the Redux Toolkit can help simplify our code.
 
 To get started, install the Redux Toolkit:
 
-```sh
-npm install @reduxjs/toolkit
+```console
+$ npm install @reduxjs/toolkit
 ```
 
 Then, code along as we refactor.
@@ -134,8 +134,8 @@ Now that we're done with the Redux Toolkit setup for our store, we can also now
 safely remove some dependencies from our app (since they're included with Redux
 Toolkit):
 
-```sh
-npm uninstall redux redux-thunk
+```console
+$ npm uninstall redux redux-thunk
 ```
 
 ## Creating Slices
@@ -271,7 +271,7 @@ export const fetchCats = createAsyncThunk("cats/fetchCats", () => {
 Next, to add this to our reducer:
 
 ```js
-const catsSlice = createReducer(
+const catsSlice = createSlice({
   name: "cats",
   initialState,
   reducers: {
@@ -288,7 +288,7 @@ const catsSlice = createReducer(
       state.status = "idle";
     },
   },
-)
+});
 ```
 
 To recap what the code above is doing:
