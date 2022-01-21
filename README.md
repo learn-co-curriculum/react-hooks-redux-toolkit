@@ -30,11 +30,11 @@ running:
 
 The amount of boilerplate code to get Redux up and running, and add new
 features, has been a consistent pain point for developers. Thankfully, the Redux
-team now has a tool to simplify the setup and make our job a bit easier: the
-**Redux Toolkit**. We're going to rewrite the "Async Redux Lab" lab to see how
-using the Redux Toolkit can help simplify our code.
+team now has a tool to simplify the setup and make our job a bit easier: **Redux
+Toolkit**. We're going to work on refactoring an application that fetches data
+from an API to see how using Redux Toolkit can help simplify our code.
 
-To get started, install the Redux Toolkit:
+To get started, install Redux Toolkit:
 
 ```console
 $ npm install @reduxjs/toolkit
@@ -140,7 +140,9 @@ $ npm uninstall redux redux-thunk
 
 ## Creating Slices
 
-Let's turn our attention next to our reducer and action creator code. All our code is in the `src/features/cats/catsSlice.js` file (a few new actions have been added for demo purposes). Let's start with the reducer:
+Let's turn our attention next to our reducer and action creator code. All our
+code is in the `src/features/cats/catsSlice.js` file (a few new actions have
+been added for demo purposes). Let's start with the reducer:
 
 ```js
 // src/features/cats/catsSlice.js
@@ -191,7 +193,10 @@ function catsReducer(state = initialState, action) {
 export default catsReducer;
 ```
 
-One of the key requirements of our reducer is that we must always **return a new version of state**, and **never** mutate state. We're using the spread operator and a few tricks with different array methods to accomplish this. Let's see how we could simplify this with Redux Toolkit.
+One of the key requirements of our reducer is that we must always **return a new
+version of state**, and **never** mutate state. We're using the spread operator
+and a few tricks with different array methods to accomplish this. Let's see how
+we could simplify this with Redux Toolkit.
 
 To start off, we'll need to import the `createSlice` function:
 
@@ -249,7 +254,9 @@ export const { catAdded, catUpdated } = catsSlice.actions;
 
 ## Async Action Creators
 
-Redux Toolkit also gives us another way to work with _async_ action creators using `redux-thunk`. We'll have to do a bit more work here to get these working than with our normal, non-thunk action creators creators.
+Redux Toolkit also gives us another way to work with _async_ action creators
+using `redux-thunk`. We'll have to do a bit more work here to get these working
+than with our normal, non-thunk action creators creators.
 
 First, we'll need to import another function from Redux Toolkit:
 
@@ -257,7 +264,8 @@ First, we'll need to import another function from Redux Toolkit:
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 ```
 
-Then, we can use this `createAsyncThunk` function to create our `fetchCats` function:
+Then, we can use this `createAsyncThunk` function to create our `fetchCats`
+function:
 
 ```js
 export const fetchCats = createAsyncThunk("cats/fetchCats", () => {
@@ -293,7 +301,8 @@ const catsSlice = createSlice({
 
 To recap what the code above is doing:
 
-- We created a new async action creator using `createAsyncThunk`, called `fetchCats`
+- We created a new async action creator using `createAsyncThunk`, called
+  `fetchCats`
 - We added a new key on the slice object called `extraReducers`, where we can
   add custom reducer logic
 - We added a case in `extraReducers` for the `fetchCats.pending` state, which
@@ -357,9 +366,13 @@ our refactor was successful.
 
 You can see the full, working code in the solution branch.
 
-## Summary
+## Conclusion
 
-Using Redux Toolkit can help remove a lot of the "boilerplate" setup code for working with Redux. It can also help save us from some of the common pitfalls of working with Redux, such as mutating state. Finally, it also gives us a way to structure our async code so that we can handle various loading states consistently and predictably.
+Using Redux Toolkit can help remove a lot of the "boilerplate" setup code for
+working with Redux. It can also help save us from some of the common pitfalls of
+working with Redux, such as mutating state. Finally, it also gives us a way to
+structure our async code so that we can handle various loading states
+consistently and predictably.
 
 ## Resources
 
